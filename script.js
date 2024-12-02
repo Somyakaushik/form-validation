@@ -1,14 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
     const nameInput = document.getElementById('nameInput');
+    const email = document.getElementById('email');
     const password = document.getElementById('password');
+    const phone = document.getElementById('phone');
     const forms = document.getElementById('forms');
     const errorElement = document.getElementById('error');
 
     forms.addEventListener('submit', (e) => {
         let messages = [];
 
-        if (nameInput.value.trim() === '' || nameInput.value == null) {
+        if (nameInput.value.trim() === '') {
             messages.push('Name is required');
+        } else if (!/^[A-Z][a-z]*( [A-Z][a-z]*)*$/.test(nameInput.value.trim())) {
+            messages.push('Each word in the name must start with an uppercase letter');
+        }
+
+        if (email.value.trim() === '') {
+            messages.push('Email is required');
+        } else if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email.value.trim())) {
+            messages.push('Only Gmail IDs are allowed');
         }
 
         if (password.value.trim() === '') {
@@ -26,6 +36,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!/[!@#$%^&*(),.?":{}|<>]/.test(password.value)) {
                 messages.push('Password must contain at least one special character');
             }
+            if (/\s/.test(password.value)) {
+                messages.push('Password must not contain spaces');
+            }
+        }
+
+        if (phone.value.trim() === '') {
+            messages.push('Phone number is required');
+        } else if (!/^\d{10}$/.test(phone.value.trim())) {
+            messages.push('Phone number must be exactly 10 digits');
         }
 
         if (messages.length > 0) {

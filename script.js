@@ -6,6 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const forms = document.getElementById('forms');
     const errorElement = document.getElementById('error');
 
+    phone.addEventListener('input', (e) => {
+        phone.value = phone.value.replace(/[^0-9]/g, '');
+    });
+
     forms.addEventListener('submit', (e) => {
         let messages = [];
 

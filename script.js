@@ -1,28 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
     const nameInput = document.getElementById('nameInput');
-    const email = document.getElementById('email');
     const password = document.getElementById('password');
     const phone = document.getElementById('phone');
+    const email = document.getElementById('email');
     const forms = document.getElementById('forms');
     const errorElement = document.getElementById('error');
 
-    phone.addEventListener('input', (e) => {
-        phone.value = phone.value.replace(/[^0-9]/g, '');
-    });
-
     forms.addEventListener('submit', (e) => {
         let messages = [];
+        const normalizedName = nameInput.value.trim().replace(/\s+/g, ' ');
+        nameInput.value = normalizedName;
 
-        if (nameInput.value.trim() === '') {
+        if (normalizedName === '') {
             messages.push('Name is required');
-        } else if (!/^[A-Z][a-z]*( [A-Z][a-z]*)*$/.test(nameInput.value.trim())) {
+        } else if (!/^[A-Z][a-z]*(\s[A-Z][a-z]*)*$/.test(normalizedName)) {
             messages.push('Each word in the name must start with an uppercase letter');
-        }
-
-        if (email.value.trim() === '') {
-            messages.push('Email is required');
-        } else if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email.value.trim())) {
-            messages.push('Only Gmail IDs are allowed');
         }
 
         if (password.value.trim() === '') {
@@ -40,15 +32,18 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!/[!@#$%^&*(),.?":{}|<>]/.test(password.value)) {
                 messages.push('Password must contain at least one special character');
             }
-            if (/\s/.test(password.value)) {
-                messages.push('Password must not contain spaces');
-            }
         }
 
         if (phone.value.trim() === '') {
             messages.push('Phone number is required');
-        } else if (!/^\d{10}$/.test(phone.value.trim())) {
+        } else if (!/^\d{10}$/.test(phone.value)) {
             messages.push('Phone number must be exactly 10 digits');
+        }
+
+        if (email.value.trim() === '') {
+            messages.push('Email is required');
+        } else if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email.value)) {
+            messages.push('Only Gmail addresses are allowed');
         }
 
         if (messages.length > 0) {
@@ -56,5 +51,9 @@ document.addEventListener('DOMContentLoaded', () => {
             errorElement.innerHTML = messages.join('<br>');
             errorElement.style.color = 'red';
         }
+    });
+
+    phone.addEventListener('input', () => {
+        phone.value = phone.value.replace(/[^0-9]/g, '');
     });
 });
